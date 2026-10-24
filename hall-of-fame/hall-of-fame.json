@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-24T17:43:51.000Z",
+  "updatedAt": "2026-10-24T17:57:04.000Z",
   "banned": [],
   "players": {
     "nvuillam": {
@@ -106,8 +106,8 @@
       "handle": "availomani",
       "badge": 2,
       "firstSubmittedAt": "2026-10-24T16:03:39.000Z",
-      "submittedAt": "2026-10-24T17:43:51.000Z",
-      "issue": 286,
+      "submittedAt": "2026-10-24T17:57:04.000Z",
+      "issue": 291,
       "worlds": {
         "0": {
           "score": 9135,
@@ -126,44 +126,44 @@
           "at": "2026-10-24T17:43:44.770Z"
         },
         "2": {
-          "score": 7527,
-          "stars": 2,
-          "bossMs": 47556,
+          "score": 8590,
+          "stars": 1,
+          "bossMs": 22988,
           "mode": "easy",
           "legacy": false,
-          "at": "2026-10-24T16:12:30.546Z"
+          "at": "2026-10-24T17:46:11.152Z"
         },
         "3": {
-          "score": 3432,
+          "score": 4102,
           "stars": 1,
-          "bossMs": 33972,
+          "bossMs": 24569,
           "mode": "easy",
           "legacy": false,
-          "at": "2026-10-24T16:17:42.087Z"
+          "at": "2026-10-24T17:49:02.508Z"
         },
         "4": {
-          "score": 11446,
+          "score": 11539,
           "stars": 3,
-          "bossMs": 21370,
+          "bossMs": 20389,
           "mode": "easy",
           "legacy": false,
-          "at": "2026-10-24T16:21:40.753Z"
+          "at": "2026-10-24T17:51:39.649Z"
         },
         "5": {
-          "score": 3468,
+          "score": 4171,
           "stars": 2,
-          "bossMs": 45340,
+          "bossMs": 27900,
           "mode": "easy",
           "legacy": false,
-          "at": "2026-10-24T16:50:14.083Z"
+          "at": "2026-10-24T17:53:25.907Z"
         },
         "6": {
-          "score": 2288,
-          "stars": 1,
-          "bossMs": 31302,
+          "score": 9183,
+          "stars": 2,
+          "bossMs": 23604,
           "mode": "easy",
           "legacy": false,
-          "at": "2026-10-24T16:55:09.970Z"
+          "at": "2026-10-24T17:56:48.380Z"
         },
         "7": {
           "score": 5895,
@@ -190,7 +190,7 @@
           "at": "2026-10-24T17:06:31.958Z"
         }
       },
-      "total": 66387,
+      "total": 75811,
       "stars": 17,
       "pinball": {
         "score": 3851250,
