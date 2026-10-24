@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-24T17:57:04.000Z",
+  "updatedAt": "2026-10-24T18:30:11.582Z",
   "banned": [],
   "players": {
     "nvuillam": {
@@ -104,7 +104,7 @@
     },
     "availomani": {
       "handle": "availomani",
-      "badge": 2,
+      "badge": 3,
       "firstSubmittedAt": "2026-10-24T16:03:39.000Z",
       "submittedAt": "2026-10-24T17:57:04.000Z",
       "issue": 291,
