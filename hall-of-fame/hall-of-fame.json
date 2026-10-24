@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-23T13:40:29.000Z",
+  "updatedAt": "2026-10-24T16:03:39.000Z",
   "banned": [],
   "players": {
     "nvuillam": {
@@ -101,6 +101,25 @@
         "notes": 1,
         "at": "2026-10-23T13:40:20.610Z"
       }
+    },
+    "availomani": {
+      "handle": "availomani",
+      "badge": 2,
+      "firstSubmittedAt": "2026-10-24T16:03:39.000Z",
+      "submittedAt": "2026-10-24T16:03:39.000Z",
+      "issue": 274,
+      "worlds": {
+        "0": {
+          "score": 7245,
+          "stars": 1,
+          "bossMs": 39922,
+          "mode": "easy",
+          "legacy": false,
+          "at": "2026-10-24T16:02:58.980Z"
+        }
+      },
+      "total": 7245,
+      "stars": 1
     }
   }
 }
