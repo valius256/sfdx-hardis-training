@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-24T16:57:57.000Z",
+  "updatedAt": "2026-10-24T17:10:21.000Z",
   "banned": [],
   "players": {
     "nvuillam": {
@@ -106,8 +106,8 @@
       "handle": "availomani",
       "badge": 2,
       "firstSubmittedAt": "2026-10-24T16:03:39.000Z",
-      "submittedAt": "2026-10-24T16:57:57.000Z",
-      "issue": 282,
+      "submittedAt": "2026-10-24T17:10:21.000Z",
+      "issue": 284,
       "worlds": {
         "0": {
           "score": 9135,
@@ -172,10 +172,34 @@
           "mode": "easy",
           "legacy": false,
           "at": "2026-10-24T16:57:52.361Z"
+        },
+        "8": {
+          "score": 5773,
+          "stars": 1,
+          "bossMs": 19486,
+          "mode": "easy",
+          "legacy": false,
+          "at": "2026-10-24T17:02:50.988Z"
+        },
+        "9": {
+          "score": 10243,
+          "stars": 2,
+          "bossMs": 63526,
+          "mode": "easy",
+          "legacy": false,
+          "at": "2026-10-24T17:06:31.958Z"
         }
       },
-      "total": 48495,
-      "stars": 15
+      "total": 64511,
+      "stars": 18,
+      "pinball": {
+        "score": 3851250,
+        "ms": 149713,
+        "level": 1,
+        "missions": 0,
+        "notes": 0,
+        "at": "2026-10-24T17:10:17.258Z"
+      }
     }
   }
 }
