@@ -12,7 +12,7 @@ A level is started when its first branch exists in the learner's repository, and
 | Level | Started | Share of learners | Completed | Share of started |
 |---|---|---|---|---|
 | Level 1 - Contributor basics | 78 | 100% | 55 | 71% |
-| Level 2 - Contributor advanced | 39 | 50% | 21 | 54% |
+| Level 2 - Contributor advanced | 39 | 50% | 22 | 56% |
 | Level 3 - Release Manager | 20 | 26% | 12 | 60% |
 
 ## Time spent
@@ -22,7 +22,7 @@ The median time of the learners who went through, next to the estimate each lab 
 | Level | First estimate | Median | Fastest | Learners |
 |---|---|---|---|---|
 | Level 1 - Contributor basics | 1 h 30 | 1 h 25 | 33 min | 49 |
-| Level 2 - Contributor advanced | 4 h | 5 h 55 | 1 h 30 | 20 |
+| Level 2 - Contributor advanced | 4 h | 6 h 04 | 1 h 31 | 21 |
 | Level 3 - Release Manager | 6 h 55 | 9 h 25 | 2 h 56 | 8 |
 
 ### Level 1 - Contributor basics
@@ -43,7 +43,7 @@ The median time of the learners who went through, next to the estimate each lab 
 | Lab 2.6 | 25 min | 29 min | 10 min | 24 |
 | Lab 2.7 | 35 min | 37 min | 10 min | 23 |
 | Lab 2.8 | 20 min | 27 min | 7 min | 23 |
-| Lab 2.9 | 30 min | 46 min | 12 min | 22 |
+| Lab 2.9 | 30 min | 48 min | 12 min | 23 |
 
 ### Level 3 - Release Manager
 
