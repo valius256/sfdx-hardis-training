@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-25T02:04:25.000Z",
+  "updatedAt": "2026-10-25T02:33:27.000Z",
   "banned": [],
   "players": {
     "nvuillam": {
       "handle": "nvuillam",
       "badge": 3,
       "firstSubmittedAt": "2026-10-22T19:27:29.000Z",
-      "submittedAt": "2026-10-25T02:04:25.000Z",
-      "issue": 296,
+      "submittedAt": "2026-10-25T02:33:27.000Z",
+      "issue": 298,
       "worlds": {
         "0": {
           "score": 16592,
@@ -35,12 +35,12 @@
           "at": "2026-10-22T19:27:29.000Z"
         },
         "3": {
-          "score": 3230,
+          "score": 7394,
           "stars": 1,
-          "bossMs": null,
-          "mode": "easy",
-          "legacy": true,
-          "at": "2026-10-22T19:27:29.000Z"
+          "bossMs": 90763,
+          "mode": "hard",
+          "legacy": false,
+          "at": "2026-10-25T01:05:18.998Z"
         },
         "4": {
           "score": 32890,
@@ -83,23 +83,23 @@
           "at": "2026-10-22T19:27:29.000Z"
         },
         "9": {
-          "score": 8810,
-          "stars": 1,
-          "bossMs": null,
-          "mode": "easy",
-          "legacy": true,
-          "at": "2026-10-22T19:27:29.000Z"
+          "score": 18850,
+          "stars": 2,
+          "bossMs": 39643,
+          "mode": "hard",
+          "legacy": false,
+          "at": "2026-10-25T01:08:40.521Z"
         }
       },
-      "total": 118817,
-      "stars": 16,
+      "total": 133021,
+      "stars": 17,
       "pinball": {
-        "score": 15247350,
-        "ms": 343002,
+        "score": 20563940,
+        "ms": 543330,
         "level": 1,
-        "missions": 1,
-        "notes": 1,
-        "at": "2026-10-23T13:40:20.610Z"
+        "missions": 3,
+        "notes": 0,
+        "at": "2026-10-25T01:32:18.878Z"
       }
     },
     "availomani": {
