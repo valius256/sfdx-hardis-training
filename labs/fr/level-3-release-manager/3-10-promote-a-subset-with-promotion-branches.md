@@ -5,7 +5,7 @@ description: "Transportez trois User Stories approuvées sur cinq de uat vers pr
 level: 3
 lab: 10
 lang: fr
-source_rev: "73533e1d3e22c99792e216cba82395b32b7aa2f9"
+source_rev: "4d39cb6d018606d8238135e3d8bf9f722d0c97c5"
 screenshots:
   - annotated/vscode/welcome-custom-menu-3
   - annotated/vscode/pipeline-config-danger--promotion-branches
@@ -74,6 +74,9 @@ telle qu'elle est, US-058 et US-060 comprises.
 - [ ] `enablePromotionBranches` et `allowedPromotionSteps` publiés au
       [Lab 3.1](3-1-configure-the-pipeline-up-to-production.md), et remontés jusqu'à `preprod` par les promotions des Labs 3.5 et 3.6
 - [ ] Rien en attente dans le panneau **Source Control** qui vous tienne encore à cœur
+- [ ] **SF Merge Driver**, en bas à droite de VS Code, affiche un rond gris : le driver est éteint.
+      Si le rond est vert, cliquez dessus pour l'éteindre, sinon il résout les conflits de
+      l'étape 4 avant que vous ne les voyiez
 
 ## Les étapes
 
@@ -852,11 +855,13 @@ et c'est volontaire.
 valeur par défaut que sfdx-hardis accepte d'inventer : entre quelles branches un release manager peut
 promouvoir est une décision sur votre pipeline.
 
-**Le cherry-pick d'US-059 n'est pas entré en conflit.**
-Quelque chose l'a résolu pour vous, en général le plugin `sf-git-merge-driver` s'il est installé sur
-votre machine. Ouvrez l'onglet **Files changed** de la Pull Request et cherchez `Warranty_Years__c`
+**Le cherry-pick d'US-059 n'est pas entré en conflit, ou sur un seul fichier.**
+Quelque chose l'a résolu pour vous, en général le SF Merge Driver : son élément en bas à droite de
+VS Code affiche un rond vert, et un clic l'éteint. Ouvrez l'onglet **Files changed** de la Pull Request et cherchez `Warranty_Years__c`
 dans la présentation de page et le permission set. S'il a voyagé, le déploiement échoue sur un champ
-que `preprod` n'a pas : retirez-le sur la promotion branch comme l'étape 6 le fait, et poussez.
+que `preprod` n'a pas : retirez-le sur la promotion branch comme l'étape 6 le fait, et poussez. S'il
+n'a pas voyagé, la promotion est juste telle quelle, et le retrofit de l'étape 9 peut quand même
+s'arrêter sur les deux fichiers.
 
 **Il n'y a pas de liens Accept au-dessus du bloc de conflit.**
 Le fichier est ouvert en aperçu ou le bloc est hors de vue. Cliquez dans le fichier, allez à la
