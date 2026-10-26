@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-25T18:20:23.000Z",
+  "updatedAt": "2026-10-26T12:21:50.000Z",
   "banned": [],
   "players": {
     "nvuillam": {
       "handle": "nvuillam",
       "badge": 3,
       "firstSubmittedAt": "2026-10-22T19:27:29.000Z",
-      "submittedAt": "2026-10-25T11:19:04.000Z",
-      "issue": 301,
+      "submittedAt": "2026-10-26T12:21:50.000Z",
+      "issue": 307,
       "worlds": {
         "0": {
           "score": 16592,
@@ -27,12 +27,12 @@
           "at": "2026-10-23T05:22:10.507Z"
         },
         "2": {
-          "score": 9540,
+          "score": 10640,
           "stars": 3,
-          "bossMs": null,
+          "bossMs": 27444,
           "mode": "easy",
-          "legacy": true,
-          "at": "2026-10-22T19:27:29.000Z"
+          "legacy": false,
+          "at": "2026-10-26T11:20:44.262Z"
         },
         "3": {
           "score": 7394,
@@ -91,7 +91,7 @@
           "at": "2026-10-25T01:08:40.521Z"
         }
       },
-      "total": 133021,
+      "total": 134121,
       "stars": 17,
       "pinball": {
         "score": 22595600,
