@@ -11,7 +11,7 @@ A level is started when its first branch exists in the learner's repository, and
 
 | Level | Started | Share of learners | Completed | Share of started |
 |---|---|---|---|---|
-| Level 1 - Contributor basics | 82 | 100% | 59 | 72% |
+| Level 1 - Contributor basics | 82 | 100% | 60 | 73% |
 | Level 2 - Contributor advanced | 43 | 52% | 23 | 53% |
 | Level 3 - Release Manager | 23 | 28% | 13 | 57% |
 
@@ -29,7 +29,7 @@ The median time of the learners who went through, next to the estimate each lab 
 
 | Labs | First estimate | Median | Fastest | Learners |
 |---|---|---|---|---|
-| Labs 1.3 to 1.6 | 1 h 05 | 47 min | 17 min | 56 |
+| Labs 1.3 to 1.6 | 1 h 05 | 48 min | 17 min | 56 |
 | Lab 1.7 | 25 min | 28 min | 7 min | 60 |
 
 ### Level 2 - Contributor advanced
@@ -37,7 +37,7 @@ The median time of the learners who went through, next to the estimate each lab 
 | Labs | First estimate | Median | Fastest | Learners |
 |---|---|---|---|---|
 | Labs 2.1 and 2.2 | 40 min | 55 min | 26 min | 36 |
-| Lab 2.3 | 30 min | 39 min | 11 min | 35 |
+| Lab 2.3 | 30 min | 43 min | 11 min | 36 |
 | Lab 2.4 | 30 min | 51 min | 17 min | 26 |
 | Lab 2.5 | 30 min | 24 min | 6 min | 24 |
 | Lab 2.6 | 25 min | 30 min | 10 min | 24 |
@@ -67,9 +67,9 @@ From the learners who ran **Check my work** at the end of each lab: their receip
 |---|---|---|---|---|
 | Lab 1.3 | 10 min | 13 min | 6 min | 30 |
 | Lab 1.4 | 15 min | 12 min | 6 min | 29 |
-| Lab 1.5 | 20 min | 16 min | 5 min | 31 |
-| Lab 1.6 | 20 min | 17 min | 5 min | 30 |
-| Lab 1.7 | 25 min | 27 min | 7 min | 32 |
+| Lab 1.5 | 20 min | 17 min | 5 min | 32 |
+| Lab 1.6 | 20 min | 17 min | 5 min | 31 |
+| Lab 1.7 | 25 min | 27 min | 7 min | 33 |
 | Lab 2.1 | 15 min | 26 min | 10 min | 11 |
 | Lab 2.2 | 25 min | 25 min | 8 min | 11 |
 | Lab 2.3 | 30 min | 49 min | 15 min | 11 |
