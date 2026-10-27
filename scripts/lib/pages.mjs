@@ -15,7 +15,7 @@
  */
 import { fill } from "./strings.mjs";
 import { duration } from "../stats/lab-times.mjs";
-import { rankGeneral, rankWorld, rankPinball, avatarUrl, isHandle, WORLD_COUNT } from "../../site-theme/javascripts/guinea-run/core/hof.js";
+import { rankGeneral, rankWorld, rankPinball, rankOrgman, avatarUrl, isHandle, WORLD_COUNT } from "../../site-theme/javascripts/guinea-run/core/hof.js";
 import { translator } from "../../site-theme/javascripts/guinea-run/texts.js";
 
 // How many players each table of the Hall of Fame shows
@@ -269,7 +269,7 @@ export function statsPage({ s, text, universe, stats }) {
 
 /**
  * The Guinea Run Hall of Fame: the overall top, the top of each world, then
- * the top of Pipeline Pinball, the bonus table.
+ * the tops of the bonuses, Pipeline Pinball and Org-Man.
  *
  * board is hall-of-fame/hall-of-fame.json, which the hall-of-fame workflow
  * writes. The rankings come from the game's own core/hof.js, so the page, the
@@ -310,7 +310,8 @@ export function hallOfFamePage({ s, board, badgeHref, badgeImage }) {
   const lines = [`# ${w.heading}`, "", ...w.intro, ""];
   const general = top(rankGeneral(board));
   const pinball = top(rankPinball(board));
-  if (general.length === 0 && pinball.length === 0) {
+  const orgman = top(rankOrgman(board));
+  if (general.length === 0 && pinball.length === 0 && orgman.length === 0) {
     lines.push(w.empty, "");
     return lines.join("\n");
   }
@@ -338,6 +339,16 @@ export function hallOfFamePage({ s, board, badgeHref, badgeImage }) {
     lines.push(
       ...header(w.pinball.columns),
       ...pinball.map((p, i) => row([i + 1, player(p, true), number.format(p.score), p.level, p.missions, Math.max(1, Math.round(p.ms / 60000))])),
+      ""
+    );
+  }
+  lines.push(`## ${w.orgman.heading}`, "", fill(w.orgman.intro, { count: HALL_OF_FAME_TOP }), "");
+  if (orgman.length === 0) {
+    lines.push(w.orgman.empty, "");
+  } else {
+    lines.push(
+      ...header(w.orgman.columns),
+      ...orgman.map((p, i) => row([i + 1, player(p, true), number.format(p.score), p.level, p.admins, Math.max(1, Math.round(p.ms / 60000))])),
       ""
     );
   }

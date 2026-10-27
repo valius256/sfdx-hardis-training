@@ -109,6 +109,16 @@ test("mergeProgress: what was sent keeps the higher score of each board", () => 
   const stored = { v: 1, sent: { worlds: { 0: 500, 1: 900 }, pinball: 100 }, sentAt: 10 };
   const mine = { v: 1, sent: { worlds: { 0: 700 }, pinball: 50 }, sentAt: 5 };
   const merged = mergeProgress(stored, mine, new Set());
-  assert.deepEqual(merged.sent, { worlds: { 0: 700, 1: 900 }, pinball: 100 });
+  assert.deepEqual(merged.sent, { worlds: { 0: 700, 1: 900 }, pinball: 100, orgman: 0 });
   assert.equal(merged.sentAt, 10);
+});
+
+test("mergeProgress: the best Org-Man game and what was sent of it are kept from both", () => {
+  const stored = { v: 1, bonuses: { orgman: { best: 900, record: { org: 1, sc: 900, sg: "a" }, teaserSeen: true } }, sent: { worlds: {}, pinball: 0, orgman: 300 } };
+  const mine = { v: 1, bonuses: { orgman: { best: 500, record: { org: 1, sc: 500, sg: "b" }, teaserSeen: false } }, sent: { worlds: {}, pinball: 0, orgman: 700 } };
+  const merged = mergeProgress(stored, mine, new Set());
+  assert.equal(merged.bonuses.orgman.best, 900);
+  assert.equal(merged.bonuses.orgman.record.sg, "a", "the record of the best game");
+  assert.equal(merged.bonuses.orgman.teaserSeen, true);
+  assert.equal(merged.sent.orgman, 700);
 });

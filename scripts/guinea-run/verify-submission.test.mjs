@@ -5,7 +5,8 @@
  */
 import test from "node:test";
 import assert from "node:assert/strict";
-import { recordText, pinballText, submissionText, hmac } from "../../site-theme/javascripts/guinea-run/core/tally.js";
+import { recordText, pinballText, orgmanText, submissionText, hmac } from "../../site-theme/javascripts/guinea-run/core/tally.js";
+import { maxScoreThrough } from "../../site-theme/javascripts/guinea-run/worlds/orgman/rules.js";
 import { verifySubmission, extractField, parseLimits, parseKeys } from "./verify-submission.mjs";
 
 const KEY = Buffer.alloc(32, 7);
@@ -252,4 +253,50 @@ test("a pinball game too short, sent twice, or with odd numbers is refused", asy
   assert.equal((await check(await submission([await pinballGame({ ms: 5000 })]))).reason, "bad-pinball");
   assert.equal((await check(await submission([await pinballGame({ lv: 0 })]))).reason, "bad-pinball");
   assert.equal((await check(await submission([await pinballGame({}), await pinballGame({ sc: 10 })]))).reason, "duplicate-pinball");
+});
+
+async function orgmanGame(fields, key = KEY) {
+  const r = { org: 1, sc: 30000, ms: 300000, lv: 3, gh: 20, at: createdMs - 60000, v: "2026.10.22", k: 3, ...fields };
+  r.sg = await hmac(key, orgmanText(r));
+  return r;
+}
+
+test("a signed Org-Man game is accepted beside the worlds and the pinball", async () => {
+  const s = await submission([await orgmanGame({}), await result({}), await pinballGame({})]);
+  const out = await check(s);
+  assert.equal(out.valid, true, out.reason);
+  const game = out.submission.results.find((r) => r.orgman);
+  assert.deepEqual([game.score, game.ms, game.level, game.admins], [30000, 300000, 3, 20]);
+  assert.deepEqual(out.submission.results.map((r) => (r.pinball ? "pinball" : r.orgman ? "orgman" : r.w)), [0, "pinball", "orgman"]);
+});
+
+test("an Org-Man game edited after it was signed, or signed as another result, is refused", async () => {
+  const game = await orgmanGame({});
+  game.sc = 90000;
+  assert.equal((await check(await submission([game]))).reason, "bad-orgman-signature");
+  const borrowed = await orgmanGame({});
+  borrowed.sg = (await pinballGame({})).sg;
+  assert.equal((await check(await submission([borrowed]))).reason, "bad-orgman-signature");
+});
+
+test("an Org-Man score no maze could give, or mazes cleared too fast, is refused", async () => {
+  const ceiling = maxScoreThrough(2);
+  assert.equal((await check(await submission([await orgmanGame({ lv: 2, sc: ceiling + 10, ms: 3600000 })]))).reason, "orgman-over-mazes");
+  assert.equal((await check(await submission([await orgmanGame({ lv: 2, sc: ceiling - 10, ms: 3600000 })]))).valid, true);
+  // Ten mazes in a minute and a half: faster than anybody can eat them
+  assert.equal((await check(await submission([await orgmanGame({ lv: 10, sc: 1000, ms: 90000 })]))).reason, "orgman-too-fast");
+});
+
+test("an Org-Man score over the cap, or faster than the ceiling per minute, is refused", async () => {
+  const tight = parseLimits(JSON.stringify({ orgmanCap: 40000, orgmanBase: 1000, orgmanPerMinute: 5000 }));
+  assert.equal((await check(await submission([await orgmanGame({ lv: 5, sc: 45000, ms: 3600000 })]), { limits: tight })).reason, "orgman-over-cap");
+  // 5 minutes: at most 1,000 + 5 x 5,000
+  assert.equal((await check(await submission([await orgmanGame({ sc: 26500 })]), { limits: tight })).reason, "orgman-too-fast");
+  assert.equal((await check(await submission([await orgmanGame({ sc: 25500 })]), { limits: tight })).valid, true);
+});
+
+test("an Org-Man game too short, sent twice, or with odd numbers is refused", async () => {
+  assert.equal((await check(await submission([await orgmanGame({ ms: 5000 })]))).reason, "bad-orgman");
+  assert.equal((await check(await submission([await orgmanGame({ lv: 0 })]))).reason, "bad-orgman");
+  assert.equal((await check(await submission([await orgmanGame({}), await orgmanGame({ sc: 10 })]))).reason, "duplicate-orgman");
 });

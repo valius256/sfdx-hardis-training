@@ -152,6 +152,12 @@
       "intro": "The bonus table, open to whoever finished the ten worlds. The best game of each player, on its own: it is not added to the total. The top {count} players.",
       "empty": "Nobody sent a game of the bonus table yet.",
       "columns": ["#", "Player", "Score", "Level", "Missions", "Minutes"]
+    },
+    "orgman": {
+      "heading": "Org-Man",
+      "intro": "The maze, open to whoever finished the ten worlds. The best game of each player, on its own: it is not added to the total. The top {count} players.",
+      "empty": "Nobody sent a game of Org-Man yet.",
+      "columns": ["#", "Player", "Score", "Maze", "Admins caught", "Minutes"]
     }
   },
   "badges": {

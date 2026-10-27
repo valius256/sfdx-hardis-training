@@ -13,6 +13,9 @@
  * nudge. On a touch screen each half of the screen is a flipper, several
  * fingers at once, and a quick swipe up nudges.
  *
+ * The maze of Org-Man (options.swipeOnMove) turns while the finger moves,
+ * so a turn is not late by the time it takes to lift it.
+ *
  * Buttons of the menus are real buttons: a click, or Enter or Space while one
  * has the focus, presses it. The pads react on pointerdown, so a press counts
  * at once instead of when the finger lifts.
@@ -198,8 +201,30 @@ export function createInput(overlay, canvas, onAction, options = {}) {
     }
     start = { x: event.clientX, y: event.clientY, time: performance.now(), id: event.pointerId };
   });
+  // A maze turns as soon as the finger has moved far enough, and the same
+  // finger may go on to the next turn without lifting (options.swipeOnMove)
+  listen(canvas, "pointermove", (event) => {
+    if (!start || start.id !== event.pointerId || !(options.swipeOnMove && options.swipeOnMove())) {
+      return;
+    }
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < SWIPE_MIN_PX) {
+      return;
+    }
+    start = { x: event.clientX, y: event.clientY, time: performance.now(), id: event.pointerId, swiped: true };
+    if (Math.abs(dx) > Math.abs(dy)) {
+      onAction(dx < 0 ? "left" : "right", null);
+    } else {
+      onAction(dy < 0 ? "jump" : "duck", null);
+    }
+  });
   listen(canvas, "pointerup", (event) => {
     if (!start || start.id !== event.pointerId) {
+      return;
+    }
+    if (start.swiped) {
+      start = null;
       return;
     }
     const dx = event.clientX - start.x;

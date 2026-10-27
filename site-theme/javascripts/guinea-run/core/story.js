@@ -30,11 +30,23 @@ export const WORLDS = [
 ];
 
 /**
- * The bonus table, Pipeline Pinball: it opens once every world is done. It is
- * not one of WORLDS, so it never changes the world count, the credits or the
- * total of the Hall of Fame: it has its own card, its own board.
+ * The bonuses: Pipeline Pinball, the table, and Org-Man, the maze. Both open
+ * once every world is done. They are not WORLDS, so they never change the
+ * world count, the credits or the total of the Hall of Fame: each has its own
+ * card, its own board.
  */
-export const BONUS = { id: "pinball", module: "pinball/index.js", style: "pinball", glyph: "star", labs: ["1.6", "3.5", "3.6"] };
+export const BONUSES = [
+  { id: "pinball", module: "pinball/index.js", style: "pinball", glyph: "star", labs: ["1.6", "3.5", "3.6"] },
+  { id: "orgman", module: "orgman/index.js", style: "maze", glyph: "eye", labs: ["3.8", "3.7"] }
+];
+
+/** Pipeline Pinball, the first bonus. */
+export const BONUS = BONUSES[0];
+
+/** A bonus by its id ("pinball", "orgman"), or null. */
+export function bonusOf(id) {
+  return BONUSES.find((b) => b.id === id) || null;
+}
 
 /**
  * How fast the game runs, and what its points are worth. Easy is the pace of

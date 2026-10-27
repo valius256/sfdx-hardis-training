@@ -23,6 +23,11 @@ export function pinballText(r) {
   return ["p1", r.sc, r.ms, r.lv, r.mi, r.nt, r.at, r.v, r.k].join("|");
 }
 
+/** The text an Org-Man game stands for: its score, its play time, the maze it reached, the admins caught. */
+export function orgmanText(r) {
+  return ["o1", r.sc, r.ms, r.lv, r.gh, r.at, r.v, r.k].join("|");
+}
+
 /** The text a submission stands for: the handle, the hour, and every result it carries. */
 export function submissionText(s) {
   // Every result counts, so no number of the issue can be edited: a signed
@@ -50,6 +55,11 @@ export async function seal(submission) {
 /** The signature of a Pipeline Pinball game, or "" when this browser cannot sign. */
 export async function stampPinball(record) {
   return sign(pinballText(record));
+}
+
+/** The signature of an Org-Man game, or "" when this browser cannot sign. */
+export async function stampOrgman(record) {
+  return sign(orgmanText(record));
 }
 
 /** The signature of a saved Pipeline Pinball game, or "": the same key, its own prefix. */

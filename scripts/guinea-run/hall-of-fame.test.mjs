@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { rankGeneral, rankWorld, rankPinball, rankOf, collectResults, topInvites, pinballTarget, scoresOf, sendWait, SEND_PAUSE_MS } from "../../site-theme/javascripts/guinea-run/core/hof.js";
+import { rankGeneral, rankWorld, rankPinball, rankOrgman, rankOf, collectResults, topInvites, pinballTarget, bonusTarget, scoresOf, sendWait, SEND_PAUSE_MS } from "../../site-theme/javascripts/guinea-run/core/hof.js";
 import { emptyBoard, mergeSubmission, badgeLevel, refreshBadges, banPlayer, removePlayer, ranksMessage, readBoard, writeBoard } from "./hall-of-fame.mjs";
 
 const at = (minute) => `2026-11-02T10:${String(minute).padStart(2, "0")}:00.000Z`;
@@ -225,7 +225,7 @@ test("Pipeline Pinball is invited on its own board, and flashes past the fifth",
 });
 
 test("the scores of results, worlds and pinball", () => {
-  assert.deepEqual(scoresOf([{ w: 0, sc: 10 }, { w: 2, sc: 30, legacy: true }, { pin: 1, sc: 99 }]), { worlds: { 0: 10, 2: 30 }, pinball: 99 });
+  assert.deepEqual(scoresOf([{ w: 0, sc: 10 }, { w: 2, sc: 30, legacy: true }, { pin: 1, sc: 99 }, { org: 1, sc: 42 }]), { worlds: { 0: 10, 2: 30 }, pinball: 99, orgman: 42 });
 });
 
 test("after a send, the game waits before it offers another", () => {
@@ -234,4 +234,39 @@ test("after a send, the game waits before it offers another", () => {
   assert.equal(sendWait(now - 3 * 60000, now), SEND_PAUSE_MS - 3 * 60000, "sent 3 minutes ago");
   assert.equal(sendWait(now - SEND_PAUSE_MS, now), 0, "the pause is over");
   assert.equal(sendWait(now + 60000, now), 0, "a clock moved back never blocks");
+});
+
+test("an Org-Man game keeps the best one, on its own board, out of the total", () => {
+  const board = emptyBoard();
+  const game = (score, level, minute) => ({ orgman: true, score, ms: 300000, level, admins: 12, at: at(minute) });
+  send(board, "Jane", [world(0, 4000, 3), game(30000, 3, 1)], 1);
+  let entry = send(board, "Jane", [game(20000, 2, 20)], 20);
+  assert.equal(entry.orgman.score, 30000);
+  assert.equal(entry.total, 4000, "the Org-Man score is not added to the worlds");
+  entry = send(board, "Jane", [game(45000, 4, 40)], 40);
+  assert.equal(entry.orgman.level, 4);
+  send(board, "Bob", [game(50000, 4, 50)], 50);
+  assert.deepEqual(rankOrgman(board).map((p) => p.handle), ["Bob", "Jane"]);
+  assert.match(ranksMessage(board, "jane"), /\| Bonus\. Org-Man \| 45000 \| #2 of 2 \|/);
+});
+
+test("the Org-Man record goes with the results only once it is signed, beside the pinball", () => {
+  const fake = (bonus, maze) => ({ world: () => ({ best: 0, stars: 0 }), bonus, bonusOf: (id) => (id === "orgman" ? maze : bonus) });
+  const none = { best: 0, record: null };
+  assert.equal(collectResults(fake(none, { best: 10, record: { org: 1, sc: 10 } }), 0).length, 0);
+  const signed = collectResults(fake({ best: 5, record: { pin: 1, sc: 5, sg: "p" } }, { best: 10, record: { org: 1, sc: 10, sg: "o" } }), 0);
+  assert.deepEqual(signed, [{ pin: 1, sc: 5, sg: "p" }, { org: 1, sc: 10, sg: "o" }]);
+});
+
+test("Org-Man is invited on its own board, and knows the fifth to pass", () => {
+  const board = emptyBoard();
+  for (let i = 1; i <= 5; i++) {
+    send(board, "p" + i, [{ orgman: true, score: i * 1000, ms: 300000, level: 1, admins: 0, at: at(i) }], i);
+  }
+  const none = { worlds: {}, pinball: 0, orgman: 0 };
+  assert.deepEqual(topInvites(board, { worlds: {}, pinball: 0, orgman: 1500 }, none, "", ["orgman", "pinball"]), [{ board: "orgman", rank: 5 }]);
+  assert.deepEqual(topInvites(board, { worlds: {}, pinball: 0, orgman: 1000 }, none, "", ["orgman"]), [], "a tie with the fifth");
+  assert.equal(bonusTarget(board, none, "", "orgman"), 1000);
+  assert.equal(bonusTarget(board, none, "p1", "orgman"), 0, "only four others: no flash");
+  assert.equal(bonusTarget(board, none, "", "pinball"), 0, "the pinball board is apart");
 });

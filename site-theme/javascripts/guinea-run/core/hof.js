@@ -73,6 +73,19 @@ export function rankPinball(board) {
     .sort((a, b) => b.score - a.score || b.level - a.level || a.at.localeCompare(b.at));
 }
 
+/** The players of Org-Man, best first: score, then the maze reached, then who got there first. */
+export function rankOrgman(board) {
+  return players(board)
+    .filter((p) => p.orgman && p.orgman.score > 0)
+    .map((p) => ({ handle: p.handle, badge: p.badge || 0, score: p.orgman.score, level: p.orgman.level || 1, admins: p.orgman.admins || 0, ms: p.orgman.ms || 0, at: p.orgman.at || "" }))
+    .sort((a, b) => b.score - a.score || b.level - a.level || a.at.localeCompare(b.at));
+}
+
+/** The ranking of a bonus board by its id. */
+export function rankBonus(board, id) {
+  return id === "orgman" ? rankOrgman(board) : rankPinball(board);
+}
+
 /** The rank (1-based) of a handle in a ranked list, or 0. */
 export function rankOf(list, handle) {
   const key = String(handle || "").toLowerCase();
@@ -86,10 +99,10 @@ export const INVITE_TOP = 5;
 /**
  * The boards where the player's scores would enter the top 5, and are not on
  * the board yet: what the game invites them to send.
- * mine: { worlds: { w: score }, pinball: score }, the scores the player can send.
+ * mine: { worlds: { w: score }, pinball: score, orgman: score }, the scores the player can send.
  * sent: the same shape, what they sent already (their board entry may lag).
  * handle: theirs, or "": their own entry is not a rival.
- * boards: the boards to look at, world ids, "all" and "pinball".
+ * boards: the boards to look at, world ids, "all", "pinball" and "orgman".
  * Returns [{ board, rank }] in the order of boards. A tie goes to whoever was
  * there first, so a score must beat the fifth one.
  */
@@ -104,10 +117,10 @@ export function topInvites(board, mine, sent, handle, boards) {
   const invites = [];
   for (const name of boards) {
     let rank = 0;
-    if (name === "pinball") {
-      const score = mine.pinball || 0;
-      if (isNew(score, Math.max(own.pinball ? own.pinball.score || 0 : 0, (sent && sent.pinball) || 0))) {
-        rank = rankAmong(score, others.filter((p) => p.pinball && p.pinball.score > 0).map((p) => p.pinball.score));
+    if (name === "pinball" || name === "orgman") {
+      const score = mine[name] || 0;
+      if (isNew(score, Math.max(own[name] ? own[name].score || 0 : 0, (sent && sent[name]) || 0))) {
+        rank = rankAmong(score, others.filter((p) => p[name] && p[name].score > 0).map((p) => p[name].score));
       }
     } else if (name === "all") {
       // Each world counts the higher of the new score and the board entry, as the workflow merges them
@@ -139,22 +152,29 @@ export function topInvites(board, mine, sent, handle, boards) {
  * (any score enters it then, a flash would come at the first points).
  */
 export function pinballTarget(board, sent, handle) {
+  return bonusTarget(board, sent, handle, "pinball");
+}
+
+/** The same for any bonus board: "pinball" or "orgman". */
+export function bonusTarget(board, sent, handle, id) {
   const key = String(handle || "").toLowerCase();
-  const list = rankPinball(board);
+  const list = rankBonus(board, id);
   const others = list.filter((p) => p.handle.toLowerCase() !== key);
   if (others.length < INVITE_TOP) {
     return 0;
   }
   const own = list.find((p) => key && p.handle.toLowerCase() === key);
-  return Math.max(others[INVITE_TOP - 1].score, own ? own.score : 0, (sent && sent.pinball) || 0);
+  return Math.max(others[INVITE_TOP - 1].score, own ? own.score : 0, (sent && sent[id]) || 0);
 }
 
 /** The scores of results, in the shape topInvites reads. */
 export function scoresOf(results) {
-  const scores = { worlds: {}, pinball: 0 };
+  const scores = { worlds: {}, pinball: 0, orgman: 0 };
   for (const r of results) {
     if (r.pin === 1) {
       scores.pinball = Math.max(scores.pinball, r.sc || 0);
+    } else if (r.org === 1) {
+      scores.orgman = Math.max(scores.orgman, r.sc || 0);
     } else if (typeof r.w === "number") {
       scores.worlds[r.w] = Math.max(scores.worlds[r.w] || 0, r.sc || 0);
     }
@@ -208,6 +228,11 @@ export function collectResults(progress, now) {
   const bonus = progress.bonus;
   if (bonus && bonus.record && bonus.record.sg && bonus.record.pin === 1) {
     results.push(bonus.record);
+  }
+  // The best game of Org-Man, on its own board too
+  const maze = progress.bonusOf ? progress.bonusOf("orgman") : null;
+  if (maze && maze.record && maze.record.sg && maze.record.org === 1) {
+    results.push(maze.record);
   }
   return results;
 }

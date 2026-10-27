@@ -165,6 +165,19 @@
       "intro": "La table bonus, ouverte à ceux qui ont terminé les dix mondes. La meilleure partie de chaque joueur, à part : elle ne compte pas dans le total. Les {count} premiers joueurs.",
       "empty": "Personne n'a encore envoyé de partie de la table bonus.",
       "columns": ["#", "Joueur", "Score", "Niveau", "Missions", "Minutes"]
+    },
+    "orgman": {
+      "heading": "Org-Man",
+      "intro": "Le labyrinthe, ouvert à ceux qui ont terminé les dix mondes. La meilleure partie de chaque joueur, à part : elle ne compte pas dans le total. Les {count} premiers joueurs.",
+      "empty": "Personne n'a encore envoyé de partie d'Org-Man.",
+      "columns": [
+        "#",
+        "Joueur",
+        "Score",
+        "Labyrinthe",
+        "Admins attrapés",
+        "Minutes"
+      ]
     }
   },
   "badges": {

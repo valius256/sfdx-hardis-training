@@ -18,17 +18,33 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { recordText, pinballText, submissionText, hmac } from "../../site-theme/javascripts/guinea-run/core/tally.js";
+import { recordText, pinballText, orgmanText, submissionText, hmac } from "../../site-theme/javascripts/guinea-run/core/tally.js";
+import { maxScoreThrough } from "../../site-theme/javascripts/guinea-run/worlds/orgman/rules.js";
 import { isHandle, LEGACY_UNTIL, WORLD_COUNT } from "../../site-theme/javascripts/guinea-run/core/hof.js";
 import { MODES } from "../../site-theme/javascripts/guinea-run/core/story.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 export const FIELD_LABEL = "Scores";
 export const MAX_FIELD_BYTES = 16 * 1024;
-export const DEFAULT_LIMITS = { cap: 20000, legacyCap: 6000, minBossMs: 0, rateMinutes: 10, pinballCap: 1000000000, pinballBase: 3000000, pinballPerMinute: 12000000 };
+export const DEFAULT_LIMITS = {
+  cap: 20000,
+  legacyCap: 6000,
+  minBossMs: 0,
+  rateMinutes: 10,
+  pinballCap: 1000000000,
+  pinballBase: 3000000,
+  pinballPerMinute: 12000000,
+  orgmanCap: 50000000,
+  orgmanBase: 30000,
+  orgmanPerMinute: 60000
+};
 // A Pipeline Pinball game lasts at least this, at most this (game time, pauses not counted)
 const PINBALL_MIN_MS = 30000;
 const PINBALL_MAX_MS = 8 * 3600000;
+// An Org-Man game: at least this long, at most this long, and never a maze in less than this (game time)
+const ORGMAN_MIN_MS = 15000;
+const ORGMAN_MAX_MS = 8 * 3600000;
+const ORGMAN_MIN_MS_PER_MAZE = 15000;
 const HOUR = 3600000;
 
 /** The value of one issue form field, addressed by its heading, without a code fence. */
@@ -96,7 +112,11 @@ export function parseLimits(text, warn = () => {}) {
     // Pipeline Pinball: a cap, and a ceiling of points per minute of play on top of a base
     pinballCap: Number.isFinite(raw.pinballCap) ? raw.pinballCap : DEFAULT_LIMITS.pinballCap,
     pinballBase: Number.isFinite(raw.pinballBase) ? raw.pinballBase : DEFAULT_LIMITS.pinballBase,
-    pinballPerMinute: Number.isFinite(raw.pinballPerMinute) ? raw.pinballPerMinute : DEFAULT_LIMITS.pinballPerMinute
+    pinballPerMinute: Number.isFinite(raw.pinballPerMinute) ? raw.pinballPerMinute : DEFAULT_LIMITS.pinballPerMinute,
+    // Org-Man: a cap, and a ceiling of points per minute of play on top of a base
+    orgmanCap: Number.isFinite(raw.orgmanCap) ? raw.orgmanCap : DEFAULT_LIMITS.orgmanCap,
+    orgmanBase: Number.isFinite(raw.orgmanBase) ? raw.orgmanBase : DEFAULT_LIMITS.orgmanBase,
+    orgmanPerMinute: Number.isFinite(raw.orgmanPerMinute) ? raw.orgmanPerMinute : DEFAULT_LIMITS.orgmanPerMinute
   };
 }
 
@@ -165,6 +185,7 @@ export async function verifySubmission({ body, author, createdAt, keys, limits, 
   const results = [];
   const legacyEnd = Date.parse(LEGACY_UNTIL + "T23:59:59.999Z");
   let pinball = false;
+  let orgman = false;
   for (const r of s.r) {
     if (!r || typeof r !== "object") {
       return refuse("bad-result");
@@ -176,6 +197,19 @@ export async function verifySubmission({ body, author, createdAt, keys, limits, 
       }
       pinball = true;
       const checked = await checkPinball(r, keys, limits, created);
+      if (checked.reason) {
+        return refuse(checked.reason);
+      }
+      results.push(checked.result);
+      continue;
+    }
+    // The best game of Org-Man, the maze: its own board too
+    if (r.org === 1) {
+      if (orgman) {
+        return refuse("duplicate-orgman");
+      }
+      orgman = true;
+      const checked = await checkOrgman(r, keys, limits, created);
       if (checked.reason) {
         return refuse(checked.reason);
       }
@@ -248,7 +282,8 @@ export async function verifySubmission({ body, author, createdAt, keys, limits, 
     }
   }
 
-  return { valid: true, submission: { handle: String(author), results: results.sort((a, b) => (a.pinball ? 99 : a.w) - (b.pinball ? 99 : b.w)) } };
+  const order = (r) => (r.pinball ? 99 : r.orgman ? 100 : r.w);
+  return { valid: true, submission: { handle: String(author), results: results.sort((a, b) => order(a) - order(b)) } };
 }
 
 /** Checks a Pipeline Pinball result: { result } or { reason }. */
@@ -274,6 +309,39 @@ async function checkPinball(r, keys, limits, created) {
     return { reason: "bad-result-date" };
   }
   return { result: { pinball: true, score: r.sc, ms: r.ms, level: r.lv, missions: r.mi, notes: r.nt, at: new Date(r.at).toISOString() } };
+}
+
+/** Checks an Org-Man result: { result } or { reason }. */
+async function checkOrgman(r, keys, limits, created) {
+  const resultKey = keys[String(r.k)];
+  if (!Number.isInteger(r.k) || !resultKey) {
+    return { reason: "unknown-result-key" };
+  }
+  if (typeof r.sg !== "string" || !sameText(await hmac(resultKey, orgmanText(r)), r.sg)) {
+    return { reason: "bad-orgman-signature" };
+  }
+  const whole = (n, min, max) => Number.isInteger(n) && n >= min && n <= max;
+  if (!whole(r.sc, 0, Number.MAX_SAFE_INTEGER) || !whole(r.ms, ORGMAN_MIN_MS, ORGMAN_MAX_MS) || !whole(r.lv, 1, 1000) || !whole(r.gh, 0, 100000)) {
+    return { reason: "bad-orgman" };
+  }
+  // No maze cleared faster than a guinea pig can eat it
+  if (r.lv > 1 + r.ms / ORGMAN_MIN_MS_PER_MAZE) {
+    return { reason: "orgman-too-fast" };
+  }
+  // More than every maze reached could give
+  if (r.sc > maxScoreThrough(r.lv)) {
+    return { reason: "orgman-over-mazes" };
+  }
+  if (r.sc > limits.orgmanCap) {
+    return { reason: "orgman-over-cap" };
+  }
+  if (r.sc > limits.orgmanBase + (limits.orgmanPerMinute * r.ms) / 60000) {
+    return { reason: "orgman-too-fast" };
+  }
+  if (!Number.isInteger(r.at) || r.at <= 0 || r.at > created + HOUR) {
+    return { reason: "bad-result-date" };
+  }
+  return { result: { orgman: true, score: r.sc, ms: r.ms, level: r.lv, admins: r.gh, at: new Date(r.at).toISOString() } };
 }
 
 /** Compares two signatures in constant time. */

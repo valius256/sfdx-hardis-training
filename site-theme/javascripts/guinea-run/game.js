@@ -17,9 +17,10 @@
  * and saves nothing, guinea-world=N opens world N directly (with
  * guinea-unlock=all), guinea-seed=N replays the same track, guinea-at=M
  * starts a runner M metres down its track, guinea-test=1 adds the test hooks
- * of window.__guineaRun to a normal game. guinea-world=pinball opens the bonus
- * table, Pipeline Pinball, which every finished game unlocks (core/story.js
- * BONUS): it is loaded like a world, keeps its own card and its own board.
+ * of window.__guineaRun to a normal game. guinea-world=pinball and
+ * guinea-world=orgman open the bonuses, Pipeline Pinball and Org-Man, which
+ * every finished game unlocks (core/story.js BONUSES): each is loaded like a
+ * world, keeps its own card and its own board.
  */
 import { translator } from "./texts.js";
 import { createHud } from "./hud.js";
@@ -30,15 +31,15 @@ import { createProgress } from "./core/progress.js";
 import { installKind, rememberedInstalled } from "./core/install.js";
 import { createSound } from "./core/sound.js";
 import { seededRandom } from "./core/random.js";
-import { WORLDS, BONUS, judgePlan, modeOf } from "./core/story.js";
+import { WORLDS, BONUSES, bonusOf, judgePlan, modeOf } from "./core/story.js";
 import { createGuineaPig } from "./guinea-pig.js";
 import { createFx } from "./core/fx.js";
 import { createModels } from "./core/models.js";
 import { createMusic } from "./core/music.js";
 import { THEMES } from "./core/themes.js";
-import { TALLY_SET, stamp, stampPinball } from "./core/tally.js";
+import { TALLY_SET, stamp, stampPinball, stampOrgman } from "./core/tally.js";
 import { hasCheckpoint, loadCheckpoint, saveCheckpoint, clearCheckpoint } from "./core/checkpoint.js";
-import { GAME_VERSION, WORLD_COUNT, collectResults, isHandle, loadBoard, pinballTarget, scoresOf, sendWait, submissionUrl, topInvites } from "./core/hof.js";
+import { GAME_VERSION, WORLD_COUNT, bonusTarget, collectResults, isHandle, loadBoard, scoresOf, sendWait, submissionUrl, topInvites } from "./core/hof.js";
 
 // scripts/build/vendor-three.mjs copies the add-ons of this same version
 const THREE_VERSION = "0.186.1";
@@ -78,7 +79,7 @@ function createGame(options) {
   const unlockAll = params.get("guinea-unlock") === "all";
   // The test hooks of window.__guineaRun, for scripts/verify/check-easter-egg.mjs
   const testHooks = unlockAll || params.get("guinea-test") === "1";
-  const directWorld = unlockAll && params.has("guinea-world") ? (params.get("guinea-world") === "pinball" ? "pinball" : Number(params.get("guinea-world"))) : null;
+  const directWorld = unlockAll && params.has("guinea-world") ? (bonusOf(params.get("guinea-world")) ? params.get("guinea-world") : Number(params.get("guinea-world"))) : null;
   const seedParam = params.get("guinea-seed");
   const startAt = Number(params.get("guinea-at")) || 0;
   // A run a check can steer is never signed, so it never reaches the Hall of Fame
@@ -123,9 +124,9 @@ function createGame(options) {
   let prepared = null;
   let inviteAsk = 0;
   let signing = Promise.resolve();
-  // The score Pipeline Pinball must pass to enter the top 5 (0: no flash), and the last game's score in a check
+  // The score the open bonus must pass to enter the top 5 of its board (0: no flash), and the best games of a check
   let pinTarget = 0;
-  let testPinball = 0;
+  const testBonus = { pinball: 0, orgman: 0 };
 
   loadStylesheet(options.base + "guinea-run.css");
   const hud = createHud(shellT, { logoUrl, badgeUrl, labs, lang });
@@ -165,18 +166,44 @@ function createGame(options) {
     tapOnDown: () => state === "playing" && Boolean(current) && String(current.module.PADS) === "jump",
     // The bonus table plays with held keys and touches
     hold: () => state === "playing" && Boolean(current && current.world) && current.module.PADS === "flippers",
-    onHold: (name, down) => current && current.world && current.world.hold && current.world.hold(name, down)
+    onHold: (name, down) => current && current.world && current.world.hold && current.world.hold(name, down),
+    // The maze turns while the finger moves
+    swipeOnMove: () => state === "playing" && Boolean(current && current.world) && current.module.SWIPE === "move"
   });
 
-  /** The world a button names: a world id, or "pinball" for the bonus table. */
+  /** The world a button names: a world id, or a bonus id ("pinball", "orgman"). */
   function worldOf(element) {
     const value = element && element.getAttribute("data-world");
-    return value === "pinball" ? "pinball" : Number(value);
+    return bonusOf(value) ? value : Number(value);
   }
 
-  /** Every world done (or a check that opens everything): the bonus table is open. */
+  /** Every world done (or a check that opens everything): the bonuses are open. */
   function bonusOpen() {
     return unlockAll || progress.bonusOpen(WORLDS);
+  }
+
+  /** Whether the world played is a bonus. */
+  function playingBonus() {
+    return Boolean(current && bonusOf(current.info.id));
+  }
+
+  /** The bonuses whose teaser was never shown, now that they are open. */
+  function unseenTeasers() {
+    return bonusOpen() && !testMode ? BONUSES.filter((b) => !progress.bonusOf(b.id).teaserSeen).map((b) => b.id) : [];
+  }
+
+  /** Shows the teaser of the bonuses never shown, once. Returns whether it did. */
+  function showTeaser(fromCredits) {
+    const ids = unseenTeasers();
+    if (!ids.length) {
+      return false;
+    }
+    for (const id of ids) {
+      progress.setTeaserSeen(id);
+    }
+    track("easter_egg_bonus_teaser", { from: fromCredits ? "credits" : "map", bonuses: ids.join(",") });
+    hud.teaser(fromCredits, ids);
+    return true;
   }
 
   function onAction(action, element) {
@@ -214,7 +241,7 @@ function createGame(options) {
         }
         return;
       case "bonus":
-        openWorld("pinball");
+        openWorld(element && bonusOf(element.getAttribute("data-world")) ? element.getAttribute("data-world") : "pinball");
         return;
       case "bonus-new":
         startBonus(false);
@@ -256,7 +283,7 @@ function createGame(options) {
       case "hof-tab":
         if (state === "hof" && element) {
           const tab = element.getAttribute("data-tab");
-          showHallOfFame(tab === "all" || tab === "pinball" ? tab : Number(tab), hofFrom);
+          showHallOfFame(tab === "all" || bonusOf(tab) ? tab : Number(tab), hofFrom);
         }
         return;
       case "start":
@@ -270,12 +297,8 @@ function createGame(options) {
         return;
       case "credits-card":
         if (state === "credits") {
-          // The first time, the roll ends on the bonus table: one more thing
-          if (bonusOpen() && !progress.bonus.teaserSeen && !testMode) {
-            progress.setTeaserSeen();
-            track("easter_egg_bonus_teaser", { from: "credits" });
-            hud.teaser(true);
-          } else {
+          // The first time, the roll ends on the bonuses: one more thing
+          if (!showTeaser(true)) {
             hud.creditsCard();
           }
         }
@@ -300,11 +323,11 @@ function createGame(options) {
         resume();
         return;
       }
-      if (current && current.info === BONUS && (state === "intro" || state === "done")) {
+      if (playingBonus() && (state === "intro" || state === "done")) {
         if (state === "done") {
           showMap();
         } else {
-          startBonus(hasCheckpoint());
+          startBonus(current.info.id === "pinball" && hasCheckpoint());
         }
         return;
       }
@@ -393,7 +416,7 @@ function createGame(options) {
     if (testHooks) {
       exposeTestHooks();
     }
-    if (directWorld !== null && (WORLDS[directWorld] || directWorld === "pinball")) {
+    if (directWorld !== null && (WORLDS[directWorld] || bonusOf(directWorld))) {
       openWorld(directWorld);
     } else {
       showMap();
@@ -423,11 +446,8 @@ function createGame(options) {
     hud.clearWorldUi();
     hud.setPads([]);
     overlay.removeAttribute("data-world");
-    // A player who finished the game before the bonus table existed sees its teaser once
-    if (bonusOpen() && !progress.bonus.teaserSeen && !testMode) {
-      progress.setTeaserSeen();
-      track("easter_egg_bonus_teaser", { from: "map" });
-      hud.teaser(false);
+    // A player who finished the game before a bonus existed sees its teaser once
+    if (showTeaser(false)) {
       return;
     }
     hud.map(
@@ -438,15 +458,16 @@ function createGame(options) {
         hud.setBadges([]);
         showMap();
       },
-      { open: bonusOpen(), best: progress.bonus.best, hasSave: hasCheckpoint() },
+      BONUSES.map((b) => ({ id: b.id, open: bonusOpen(), best: progress.bonusOf(b.id).best, hasSave: b.id === "pinball" && hasCheckpoint() })),
       installOffer()
     );
     markMap();
   }
 
   async function openWorld(id) {
-    const info = id === "pinball" ? BONUS : WORLDS[id];
-    if (!info || (id === "pinball" ? !bonusOpen() : id > progress.unlocked && !unlockAll)) {
+    const bonus = bonusOf(id);
+    const info = bonus || WORLDS[id];
+    if (!info || (bonus ? !bonusOpen() : id > progress.unlocked && !unlockAll)) {
       showMap();
       return;
     }
@@ -499,22 +520,22 @@ function createGame(options) {
     engine.setActive(false);
     // A world says how it is played in three short steps: how1, how2, how3
     const how = ["how1", "how2", "how3"].map((key) => current.t(key)).filter((text, i) => text && text !== "how" + (i + 1));
-    if (info === BONUS) {
-      readPinballTarget();
-      hud.bonusIntro({ story: current.t("intro"), how, best: progress.bonus.best, hasSave: hasCheckpoint(), title: current.t("pbTitle") });
+    if (bonus) {
+      readBonusTarget();
+      hud.bonusIntro({ id: info.id, story: current.t("intro"), how, best: progress.bonusOf(info.id).best, hasSave: info.id === "pinball" && hasCheckpoint() });
     } else {
       hud.intro(info, progress.world(id), current.t("intro"), how, module.PADS, modeOf(progress.mode));
     }
     track("easter_egg_world_open", { world: id });
   }
 
-  /** Starts the bonus table: a new game, or the saved one (a saved game that was changed starts a new one). */
+  /** Starts a bonus: a new game, or for the table the saved one (a saved game that was changed starts a new one). */
   async function startBonus(resume) {
-    if (!current || current.info !== BONUS) {
+    if (!playingBonus()) {
       return;
     }
     let saved = null;
-    if (resume) {
+    if (resume && current.info.id === "pinball") {
       const read = await loadCheckpoint();
       if (read && read.state) {
         saved = read.state;
@@ -523,7 +544,7 @@ function createGame(options) {
         hud.toast(shellT("bonusSaveBroken"), "bad");
       }
     }
-    if (!current || current.info !== BONUS || (state !== "intro" && state !== "done")) {
+    if (!playingBonus() || (state !== "intro" && state !== "done")) {
       return;
     }
     if (state !== "intro") {
@@ -533,10 +554,10 @@ function createGame(options) {
     hud.playing();
     engine.setActive(true);
     current.world.start({ resume: saved });
-    track("easter_egg_bonus_start", { resume: Boolean(saved) });
+    track("easter_egg_bonus_start", { bonus: current.info.id, resume: Boolean(saved) });
   }
 
-  /** The end of a pinball game: its record, the Hall of Fame, the card. */
+  /** The end of a game of a bonus: its record, the Hall of Fame, the card. */
   function bonusOver(summary) {
     if (!run || run.ended) {
       return;
@@ -544,19 +565,27 @@ function createGame(options) {
     run.ended = true;
     state = "done";
     engine.setActive(false);
-    const before = progress.bonus.best;
-    const record = testMode ? null : { pin: 1, sc: summary.score, ms: summary.ms, lv: summary.level, mi: summary.missions, nt: summary.notes, at: Date.now(), v: GAME_VERSION, k: TALLY_SET };
-    const newBest = testMode ? summary.score > before : progress.completeBonus(summary.score, record);
+    const id = current.info.id;
+    const before = progress.bonusOf(id).best;
+    let record = null;
+    if (!testMode) {
+      record =
+        id === "orgman"
+          ? { org: 1, sc: summary.score, ms: summary.ms, lv: summary.level, gh: summary.admins, at: Date.now(), v: GAME_VERSION, k: TALLY_SET }
+          : { pin: 1, sc: summary.score, ms: summary.ms, lv: summary.level, mi: summary.missions, nt: summary.notes, at: Date.now(), v: GAME_VERSION, k: TALLY_SET };
+    }
+    const newBest = testMode ? summary.score > before : progress.completeBonus(summary.score, record, id);
     if (newBest && record) {
-      signing = stampPinball(record).then((sg) => sg && progress.setBonusRecord(Object.assign({}, record, { sg })));
+      const stamper = id === "orgman" ? stampOrgman : stampPinball;
+      signing = stamper(record).then((sg) => sg && progress.setBonusRecord(Object.assign({}, record, { sg }), id));
     }
     if (testMode) {
-      testPinball = Math.max(testPinball, summary.score);
+      testBonus[id] = Math.max(testBonus[id] || 0, summary.score);
     }
-    track("easter_egg_bonus_over", { score: summary.score, level: summary.level, missions: summary.missions, minutes: Math.round(summary.ms / 60000), trigger: options.trigger });
+    track("easter_egg_bonus_over", { bonus: id, score: summary.score, level: summary.level, missions: summary.missions, admins: summary.admins, minutes: Math.round(summary.ms / 60000), trigger: options.trigger });
     sound.play(newBest ? "fanfare" : "happy");
-    hud.bonusResult(Object.assign({ best: Math.max(before, summary.score), newBest }, summary));
-    inviteFor(["pinball"]);
+    hud.bonusResult(Object.assign({ id, best: Math.max(before, summary.score), newBest }, summary));
+    inviteFor([id]);
   }
 
   /** Builds the world from its module, fresh: every attempt of a world starts clean. */
@@ -569,8 +598,8 @@ function createGame(options) {
     hud.clearWorldUi();
     resetPig();
     // The mode is read once per run: a world is played in one mode from start to end.
-    // The pinball ignores it: same points in every mode, so the same speed (Easy's)
-    const mode = current.info === BONUS ? modeOf("easy") : modeOf(progress.mode);
+    // The bonuses ignore it: same points in every mode, so the same speed (Easy's)
+    const mode = playingBonus() ? modeOf("easy") : modeOf(progress.mode);
     run = { score: 0, attempts: ATTEMPTS, lost: 0, note: false, tip: "", combo: 0, comboTime: -10, ended: false, bossClock: null, bossDone: false, mode };
     const root = new THREE.Group();
     engine.scene.add(root);
@@ -579,7 +608,7 @@ function createGame(options) {
     current.paint = paint;
     hud.setPads(current.module.PADS || ["left", "right", "jump", "duck"]);
     current.world = current.module.createWorld(makeContext(root, paint));
-    if (current.info !== BONUS) {
+    if (!playingBonus()) {
       updateHud();
     }
   }
@@ -660,9 +689,13 @@ function createGame(options) {
       sound,
       world: info,
       params: { startAt, testMode, seed: Number(seedParam) || 0 },
-      /** The score Pipeline Pinball must pass to enter the top 5 of its board, 0 when there is nothing to flash. */
+      /** The score a bonus must pass to enter the top 5 of its board, 0 when there is nothing to flash. */
       get hofTarget() {
         return pinTarget;
+      },
+      /** The best game of the bonus played, in this browser. */
+      get bonusBest() {
+        return bonusOf(info.id) ? progress.bonusOf(info.id).best : 0;
       },
       /** How much faster than Easy the world runs (1, 1.5 or 2): its update already gets the faster time, a musical run sets its tempo with it. */
       get speed() {
@@ -789,7 +822,7 @@ function createGame(options) {
       /** The bonus table: its top bar, its saved game, its end. Nothing is saved by a check. */
       bonus: {
         hud(view) {
-          hud.update({ world: shellT("bonusName"), score: view.score, attempts: 0, maxAttempts: 0, label: view.ball });
+          hud.update({ world: shellT(info.id === "orgman" ? "orgName" : "bonusName"), score: view.score, attempts: 0, maxAttempts: 0, label: view.ball });
         },
         saveCheckpoint(snapshot) {
           return testMode ? Promise.resolve(false) : saveCheckpoint(snapshot);
@@ -972,7 +1005,7 @@ function createGame(options) {
       for (let w = 0; w < WORLD_COUNT; w++) {
         worlds[w] = progress.world(w).best;
       }
-      return { worlds, pinball: testPinball };
+      return { worlds, pinball: testBonus.pinball, orgman: testBonus.orgman };
     }
     return scoresOf(collectResults(progress, Date.now()));
   }
@@ -1071,18 +1104,19 @@ function createGame(options) {
 
   /** The mark on the Hall of Fame button of the map, while a top 5 score waits to be sent. */
   async function markMap() {
-    const boards = Array.from({ length: WORLD_COUNT }, (_, w) => w).concat(["all", "pinball"]);
+    const boards = Array.from({ length: WORLD_COUNT }, (_, w) => w).concat(["all"], BONUSES.map((b) => b.id));
     const invites = await invitesFor(boards);
     if (state === "map") {
       hud.markHof(invites.length > 0);
     }
   }
 
-  /** What Pipeline Pinball must pass to flash TOP 5, read while its card shows. */
-  async function readPinballTarget() {
+  /** What the open bonus must pass to flash TOP 5, read while its card shows. */
+  async function readBonusTarget() {
     pinTarget = 0;
+    const id = current && current.info.id;
     const read = await currentBoard();
-    pinTarget = read.ok ? pinballTarget(read.board, progress.sent, progress.handle) : 0;
+    pinTarget = read.ok && bonusOf(id) ? bonusTarget(read.board, progress.sent, progress.handle, id) : 0;
   }
 
   function updateHud() {
@@ -1249,15 +1283,15 @@ function createGame(options) {
     window.__guineaRun = {
       state: () => state,
       world: () => (current ? current.info.id : null),
-      finish: () => current && current.world && (current.info === BONUS ? bonusOver({ score: 1000, ms: 60000, level: 1, missions: 0, notes: 0 }) : succeedWorld(0)),
+      finish: () => current && current.world && (playingBonus() ? bonusOver({ score: 1000, ms: 60000, level: 1, missions: 0, notes: 0, admins: 0 }) : succeedWorld(0)),
       fail: () => current && current.world && failWorld(),
       action: (name) => onAction(name, null),
       bossClock: () => (run ? run.bossClock : null),
       // A board to rank against, instead of the one on GitHub
       board: (value) => {
         board = { board: value, ok: true, at: Date.now() + 864e5 };
-        if (current && current.info === BONUS) {
-          readPinballTarget();
+        if (playingBonus()) {
+          readBonusTarget();
         }
       },
       hofTarget: () => pinTarget,

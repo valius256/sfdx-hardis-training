@@ -332,6 +332,33 @@ export const THEMES = {
     ]
   },
 
+  // Org-Man, the maze: a quick chase, a walking bass and a square lead that runs round the scale
+  orgman: {
+    bpm: 132,
+    root: 60,
+    progression: [0, 5, 3, 4],
+    volume: 0.13,
+    leadVoice: "square",
+    lead: {
+      a: melody("0.4.7.4.9.7.4.2. 0.2.4.5.7...4... 5.4.2.0.2.4.5.7. 9.7.5.4.2...0..."),
+      b: melody("7.7.9.7.4...2... 5.5.7.5.2...0... 4.5.7.9.b.9.7.5. 4.2.0.2.4.......")
+    },
+    sections: {
+      intro: { kick: FOUR, bass: "x.x.x.x.x.x.x.x." },
+      verse: { kick: FOUR, hat: OFFBEATS, bass: "x.o.x.o.x.o.x.o.", lead: "a" },
+      chorus: { kick: FOUR, clap: BACKBEAT, hat: EIGHTHS, bass: "x.o.x.o.x.o.x.o.", arp: true, lead: "b" },
+      break: { pad: true, arp: true, bass: "x.......x......." }
+    },
+    form: [
+      ["intro", 2],
+      ["verse", 8],
+      ["chorus", 8],
+      ["break", 4],
+      ["verse", 8],
+      ["chorus", 8]
+    ]
+  },
+
   // 9 Monitor production: an arcade march at night, a bass stomping down the chords under a square lead
   9: {
     bpm: 120,

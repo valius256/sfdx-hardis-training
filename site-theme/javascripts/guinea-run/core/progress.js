@@ -3,8 +3,9 @@
  * best score and stars of each (with the result the Hall of Fame receives),
  * the badges, Victor's notes found, the GitHub handle of the player and the
  * scores they sent to the Hall of Fame, the deployment actions plan declared
- * in world 3, which the runners read, and the best game of Pipeline Pinball, the bonus table. A pinball game in
- * progress is saved apart, by core/checkpoint.js.
+ * in world 3, which the runners read, and the best game of each bonus: Pipeline
+ * Pinball (kept under "bonus", as before Org-Man existed) and Org-Man (under
+ * "bonuses"). A pinball game in progress is saved apart, by core/checkpoint.js.
  *
  * Every access is wrapped: a browser that blocks storage still plays, it just
  * forgets between visits. With ?guinea-unlock=all every world is open and
@@ -47,6 +48,15 @@ export function createProgress(options) {
     } catch {
       // No storage events: the next save merges anyway
     }
+  }
+
+  function store(id, bonus) {
+    if (id === "pinball") {
+      state.bonus = bonus;
+    } else {
+      state.bonuses = Object.assign({}, state.bonuses, { [id]: bonus });
+    }
+    save();
   }
 
   function save() {
@@ -148,9 +158,9 @@ export function createProgress(options) {
       touched.add("handle");
       save();
     },
-    /** The scores sent to the Hall of Fame so far, { worlds: { w: score }, pinball }: the board may not show them yet. */
+    /** The scores sent to the Hall of Fame so far, { worlds: { w: score }, pinball, orgman }: the board may not show them yet. */
     get sent() {
-      return state.sent || { worlds: {}, pinball: 0 };
+      return Object.assign({ worlds: {}, pinball: 0, orgman: 0 }, state.sent || {});
     },
     /** When the player last sent their scores (ms), 0 if never. */
     get sentAt() {
@@ -162,6 +172,7 @@ export function createProgress(options) {
         sent.worlds[w] = Math.max(sent.worlds[w] || 0, score);
       }
       sent.pinball = Math.max(sent.pinball || 0, scores.pinball || 0);
+      sent.orgman = Math.max(sent.orgman || 0, scores.orgman || 0);
       state.sent = sent;
       state.sentAt = now;
       save();
@@ -188,36 +199,38 @@ export function createProgress(options) {
     },
     /** Pipeline Pinball: its best score, the signed result of that game, whether its teaser was shown. */
     get bonus() {
-      return Object.assign({ best: 0, record: null, teaserSeen: false }, state.bonus || {});
+      return this.bonusOf("pinball");
+    },
+    /** A bonus by its id: its best score, the signed result of that game, whether its teaser was shown. */
+    bonusOf(id) {
+      const stored = id === "pinball" ? state.bonus : (state.bonuses || {})[id];
+      return Object.assign({ best: 0, record: null, teaserSeen: false }, stored || {});
     },
     /** Every world done: the bonus table is open. */
     bonusOpen(worlds) {
       return worlds.every((w) => (state.worlds[w.id] || { stars: 0 }).stars > 0);
     },
-    /** Records a finished pinball game, and returns whether it is a new best. record: as complete(). */
-    completeBonus(score, record) {
-      const bonus = this.bonus;
+    /** Records a finished game of a bonus ("pinball" when not said), and returns whether it is a new best. record: as complete(). */
+    completeBonus(score, record, id = "pinball") {
+      const bonus = this.bonusOf(id);
       const newBest = score > bonus.best;
       if (newBest) {
         bonus.best = score;
         bonus.record = record || null;
       }
-      state.bonus = bonus;
-      save();
+      store(id, bonus);
       askToKeep();
       return newBest;
     },
-    setBonusRecord(record) {
-      const bonus = this.bonus;
+    setBonusRecord(record, id = "pinball") {
+      const bonus = this.bonusOf(id);
       if (bonus.best === record.sc) {
         bonus.record = record;
-        state.bonus = bonus;
-        save();
+        store(id, bonus);
       }
     },
-    setTeaserSeen() {
-      state.bonus = Object.assign(this.bonus, { teaserSeen: true });
-      save();
+    setTeaserSeen(id = "pinball") {
+      store(id, Object.assign(this.bonusOf(id), { teaserSeen: true }));
     },
     reset() {
       // The handle, the mode and what was sent are who the player is, not what they did: they stay
@@ -243,7 +256,7 @@ export function createProgress(options) {
 /**
  * Two saves of the same player made one: the best of each world (with the
  * result of that best), every badge and note, the furthest world open, the
- * best pinball game. mode, handle and plan come from mine when this game chose
+ * best game of each bonus. mode, handle and plan come from mine when this game chose
  * them (touched), from stored otherwise.
  */
 export function mergeProgress(stored, mine, touched) {
@@ -270,6 +283,13 @@ export function mergeProgress(stored, mine, touched) {
   }
   if (stored.bonus || mine.bonus) {
     merged.bonus = mergeBonus(stored.bonus, mine.bonus);
+  }
+  // The other bonuses (Org-Man), one by one, the same way
+  if (stored.bonuses || mine.bonuses) {
+    merged.bonuses = {};
+    for (const id of new Set(Object.keys(stored.bonuses || {}).concat(Object.keys(mine.bonuses || {})))) {
+      merged.bonuses[id] = mergeBonus((stored.bonuses || {})[id], (mine.bonuses || {})[id]);
+    }
   }
   return merged;
 }
@@ -314,7 +334,7 @@ function mergeWorld(a, b) {
 }
 
 function mergeSent(a, b) {
-  const sent = { worlds: {}, pinball: 0 };
+  const sent = { worlds: {}, pinball: 0, orgman: 0 };
   for (const part of [a, b]) {
     if (!part) {
       continue;
@@ -323,6 +343,7 @@ function mergeSent(a, b) {
       sent.worlds[w] = Math.max(sent.worlds[w] || 0, score);
     }
     sent.pinball = Math.max(sent.pinball, part.pinball || 0);
+    sent.orgman = Math.max(sent.orgman, part.orgman || 0);
   }
   return sent;
 }

@@ -3,6 +3,11 @@
 What changed in the course, for learners and trainers. The course has no versions: each section is
 a day, newest first, and a change goes under the date of the day it is made.
 
+## 2026-10-27
+
+- Lab 2.6: the `no Layout named ...` troubleshooting entry names `FlowRecord-Flow Layout` as a layout to delete from the Profile.
+- Lab 2.8: a troubleshooting entry says a red check on the Profile of the over-wide Pull Request is cleared by the reset, nothing to fix by hand.
+
 ## 2026-10-26
 
 - Pipeline Pinball: a ball no longer gets stuck in a hole during multiball, Rollback now works and lights both outlanes, a ball below the Production floor waits until it is back in view, the admins show their faces, and the score display is easier to read.
@@ -20,6 +25,7 @@ a day, newest first, and a change goes under the date of the day it is made.
 - Lab 3.10: troubleshooting for a cherry-pick of US-059 that conflicts on one file only.
 - Labs 2.7 and 3.10: check that the SF Merge Driver is off before you start, since it solves the conflicts these labs teach.
 - Lab 3.11: how to stop the nightly crew capacity email in the orgs you keep.
+- Guinea Run has a second bonus, Org-Man: a maze where four admins chase the guinea pig, deployment rockets that turn them blue, faster mazes as you go, and its own Hall of Fame board. It opens with Pipeline Pinball, once the ten worlds are done.
 
 ## 2026-10-24
 
