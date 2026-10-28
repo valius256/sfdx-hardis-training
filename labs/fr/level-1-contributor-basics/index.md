@@ -4,12 +4,12 @@ description: "Formation Salesforce DevOps gratuite et pratique pour admins et d�
 id: l1-home
 level: 1
 lang: fr
-source_rev: "52a18a09b07af4dcc8fcca1797fc9215be1b13c9"
+source_rev: "00a7195666d14a1f6eeab5d8a1399a2c1b926817"
 ---
 
 # Niveau 1 - Contributeur Salesforce DevOps, les bases
 
-**Durée** : environ 2 h, en une fois ou en sept.<!-- observed --> Observé sur les Labs 1.3 à 1.7 : médiane 1 h 29, 52 participants, le plus rapide 33 min.<!-- /observed -->
+**Durée** : environ 2 h, en une fois ou en sept.<!-- observed --> Observé sur les Labs 1.3 à 1.7 : médiane 1 h 25, 53 participants, le plus rapide 32 min.<!-- /observed -->
 
 **Prérequis** : aucun. C'est le premier niveau.
 
