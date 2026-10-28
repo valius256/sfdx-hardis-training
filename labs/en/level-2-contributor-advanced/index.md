@@ -8,7 +8,7 @@ lang: en
 
 # Level 2 - Salesforce DevOps contributor advanced
 
-**Time**: about 5 h 30.<!-- observed --> Observed on Labs 2.1 to 2.9: median 6 h 29, 21 learners, fastest 1 h 54.<!-- /observed -->
+**Time**: about 5 h 30.<!-- observed --> Observed on Labs 2.1 to 2.9: median 6 h 58, 22 learners, fastest 1 h 54.<!-- /observed -->
 
 **Before you start**: [Level 1](../level-1-contributor-basics/index.md). Not optional: every lab here assumes the loop
 is automatic for you.
