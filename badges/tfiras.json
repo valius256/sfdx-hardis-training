@@ -40,7 +40,7 @@
         "course": "https://sfdx-hardis-training.cloudity.com"
       },
       "issuedOn": "2026-10-29",
-      "issuedAt": "2026-10-29T17:35:59Z",
+      "issuedAt": "2026-10-29T17:46:59Z",
       "evidence": [
         {
           "type": "Repository",
@@ -48,7 +48,7 @@
         },
         {
           "type": "ClaimIssue",
-          "url": "https://github.com/hardisgroupcom/sfdx-hardis-training/issues/343"
+          "url": "https://github.com/hardisgroupcom/sfdx-hardis-training/issues/344"
         }
       ],
       "image": "https://sfdx-hardis-training.cloudity.com/badges/img/tfiras-level-2.svg",
