@@ -2,8 +2,8 @@
 
 # Course statistics
 
-Read every Monday and after every badge awarded, from the public repositories of the 115 learners who set up the course, and from the badges they claimed.
-Last update: 2026-11-17.
+Read every Monday and after every badge awarded, from the public repositories of the 116 learners who set up the course, and from the badges they claimed.
+Last update: 2026-11-18.
 
 ## Started and completed
 
@@ -11,8 +11,8 @@ A level is started when its first branch exists in the learner's repository, and
 
 | Level | Started | Share of learners | Completed | Share of started |
 |---|---|---|---|---|
-| Level 1 - Contributor basics | 113 | 98% | 78 | 69% |
-| Level 2 - Contributor advanced | 62 | 54% | 38 | 61% |
+| Level 1 - Contributor basics | 114 | 98% | 79 | 69% |
+| Level 2 - Contributor advanced | 62 | 53% | 38 | 61% |
 | Level 3 - Release Manager | 39 | 34% | 20 | 51% |
 
 ## Time spent
@@ -21,7 +21,7 @@ The median time of the learners who went through, next to the estimate each lab 
 
 | Level | First estimate | Median | Fastest | Learners |
 |---|---|---|---|---|
-| Level 1 - Contributor basics | 1 h 30 | 1 h 27 | 33 min | 71 |
+| Level 1 - Contributor basics | 1 h 30 | 1 h 27 | 33 min | 72 |
 | Level 2 - Contributor advanced | 4 h | 8 h 08 | 3 h 52 | 34 |
 | Level 3 - Release Manager | 6 h 55 | 10 h 11 | 2 h 56 | 14 |
 
@@ -29,8 +29,8 @@ The median time of the learners who went through, next to the estimate each lab 
 
 | Labs | First estimate | Median | Fastest | Learners |
 |---|---|---|---|---|
-| Labs 1.3 to 1.6 | 1 h 05 | 51 min | 18 min | 76 |
-| Lab 1.7 | 25 min | 27 min | 7 min | 80 |
+| Labs 1.3 to 1.6 | 1 h 05 | 53 min | 18 min | 77 |
+| Lab 1.7 | 25 min | 27 min | 7 min | 81 |
 
 ### Level 2 - Contributor advanced
 
