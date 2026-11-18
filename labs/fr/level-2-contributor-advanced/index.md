@@ -4,7 +4,7 @@ description: "Affrontez ce que les vraies livraisons Salesforce vous envoient : 
 id: l2-home
 level: 2
 lang: fr
-source_rev: "e197c91bfce4f8e9d21bdf4f83ea3dda7676717a"
+source_rev: "8eecb2a0de8e67197b716ea2938333bb378b8eda"
 ---
 
 # Niveau 2 - Contributeur Salesforce DevOps avancé
@@ -34,9 +34,9 @@ jours.
 | Lab                                                                   | Titre                                                                   | Durée  |
 |-----------------------------------------------------------------------|-------------------------------------------------------------------------|--------|
 | [2.1](2-1-backpromote-your-teammates-work.md)                         | Backpromote : remettre votre org de dev au niveau de l'équipe           | 35 min |
-| [2.2](2-2-fix-a-missing-dependency-deployment-error.md)               | Corriger une erreur de déploiement due à une dépendance manquante       | 35 min |
+| [2.2](2-2-fix-a-missing-dependency-deployment-error.md)               | Corriger une erreur de déploiement due à une dépendance manquante       | 30 min |
 | [2.3](2-3-fix-broken-records-with-an-apex-deployment-action.md)       | Réparer des enregistrements cassés avec une deployment action Apex      | 40 min |
-| [2.4](2-4-ship-reference-data-and-a-batch-with-deployment-actions.md) | Livrer des données de référence et un batch avec des deployment actions | 1 h 05 |
+| [2.4](2-4-ship-reference-data-and-a-batch-with-deployment-actions.md) | Livrer des données de référence et un batch avec des deployment actions | 1 h 10 |
 | [2.5](2-5-pass-code-quality-and-apex-test-coverage.md)                | Passer la barrière de qualité de code et la couverture de tests Apex    | 25 min |
 | [2.6](2-6-permission-sets-and-profiles.md)                            | Permission sets, profils, et pourquoi une autorisation disparaît        | 25 min |
 | [2.7](2-7-resolve-a-git-merge-conflict.md)                            | Résoudre un conflit de merge Git avec un collègue                       | 40 min |
