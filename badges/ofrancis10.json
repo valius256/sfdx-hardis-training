@@ -40,7 +40,7 @@
         "course": "https://sfdx-hardis-training.cloudity.com"
       },
       "issuedOn": "2026-11-19",
-      "issuedAt": "2026-11-19T19:41:28Z",
+      "issuedAt": "2026-11-19T19:44:34Z",
       "evidence": [
         {
           "type": "Repository",
@@ -48,7 +48,7 @@
         },
         {
           "type": "ClaimIssue",
-          "url": "https://github.com/hardisgroupcom/sfdx-hardis-training/issues/415"
+          "url": "https://github.com/hardisgroupcom/sfdx-hardis-training/issues/416"
         }
       ],
       "image": "https://sfdx-hardis-training.cloudity.com/badges/img/ofrancis10-level-2.svg",
