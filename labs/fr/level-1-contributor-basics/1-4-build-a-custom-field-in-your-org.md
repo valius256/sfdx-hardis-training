@@ -5,7 +5,7 @@ description: "Créez un champ personnalisé, accordez-le par un permission set e
 level: 1
 lab: 4
 lang: fr
-source_rev: "0a304dfc90c3c30a47966e64531bd3371ed8d88c"
+source_rev: "f9df2a67b240367ae00776e3a971dfbee1368822"
 screenshots:
   - annotated/vscode/orgs-manager-actions
   - annotated/salesforce/object-manager-fields
@@ -23,7 +23,7 @@ depends_on:
 
 **Niveau** : 1 Contributeur, les bases
 
-**Durée** : ~10 min<!-- observed --> (observé : médiane 12 min, 40 participants, le plus rapide 6 min)<!-- /observed -->
+**Durée** : ~10 min<!-- observed --> (observé : médiane 12 min, 41 participants, le plus rapide 6 min)<!-- /observed -->
 
 **Vous allez** : construire US-014 comme un admin construit n'importe quoi, en cliquant dans
 Salesforce Setup, et le vérifier sur de vrais enregistrements.
