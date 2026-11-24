@@ -5,7 +5,7 @@ description: "Modifiez un flow Salesforce existant, puis lisez correctement un c
 level: 2
 lab: 2
 lang: fr
-source_rev: "bcdac4a81c7d379fba38e8633960dcb6f619e2e5"
+source_rev: "35a006aad5018c8fa9b60c656e4066dc7a68d45e"
 screenshots:
   - annotated/vscode/package-xml-filtered
   - annotated/vscode/editor-field-file
@@ -31,7 +31,7 @@ depends_on:
 
 **Niveau** : 2 Contributeur avancé
 
-**Durée** : ~35 min<!-- observed --> (observé : médiane 35 min, 20 participants, le plus rapide 17 min)<!-- /observed -->
+**Durée** : ~35 min<!-- observed --> (observé : médiane 35 min, 21 participants, le plus rapide 17 min)<!-- /observed -->
 
 **Vous allez** : modifier un flow qui tourne déjà en production, rencontrer votre premier contrôle de
 déploiement en échec, lire l'erreur correctement, et trouver ce que votre package a oublié.
