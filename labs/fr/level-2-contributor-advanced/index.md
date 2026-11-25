@@ -4,7 +4,7 @@ description: "Affrontez ce que les vraies livraisons Salesforce vous envoient : 
 id: l2-home
 level: 2
 lang: fr
-source_rev: "7863a72cf22a1a67429f3a2b52e0f91087105dc5"
+source_rev: "d1318ac5c17c598cfe126ad80ba4f65ea8153bfd"
 ---
 
 # Niveau 2 - Contributeur Salesforce DevOps avancé
@@ -33,7 +33,7 @@ jours.
 
 | Lab                                                                   | Titre                                                                   | Durée  |
 |-----------------------------------------------------------------------|-------------------------------------------------------------------------|--------|
-| [2.1](2-1-backpromote-your-teammates-work.md)                         | Backpromote : remettre votre org de dev au niveau de l'équipe           | 35 min |
+| [2.1](2-1-backpromote-your-teammates-work.md)                         | Backpromote : remettre votre org de dev au niveau de l'équipe           | 40 min |
 | [2.2](2-2-fix-a-missing-dependency-deployment-error.md)               | Corriger une erreur de déploiement due à une dépendance manquante       | 35 min |
 | [2.3](2-3-fix-broken-records-with-an-apex-deployment-action.md)       | Réparer des enregistrements cassés avec une deployment action Apex      | 45 min |
 | [2.4](2-4-ship-reference-data-and-a-batch-with-deployment-actions.md) | Livrer des données de référence et un batch avec des deployment actions | 1 h 05 |

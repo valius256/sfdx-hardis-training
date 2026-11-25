@@ -2,8 +2,8 @@
 
 # Course statistics
 
-Read every Monday and after every badge awarded, from the public repositories of the 122 learners who set up the course, and from the badges they claimed.
-Last update: 2026-11-24.
+Read every Monday and after every badge awarded, from the public repositories of the 124 learners who set up the course, and from the badges they claimed.
+Last update: 2026-11-25.
 
 ## Started and completed
 
@@ -11,9 +11,9 @@ A level is started when its first branch exists in the learner's repository, and
 
 | Level | Started | Share of learners | Completed | Share of started |
 |---|---|---|---|---|
-| Level 1 - Contributor basics | 120 | 98% | 84 | 70% |
-| Level 2 - Contributor advanced | 65 | 53% | 42 | 65% |
-| Level 3 - Release Manager | 43 | 35% | 21 | 49% |
+| Level 1 - Contributor basics | 122 | 98% | 84 | 69% |
+| Level 2 - Contributor advanced | 66 | 53% | 42 | 64% |
+| Level 3 - Release Manager | 44 | 35% | 23 | 52% |
 
 ## Time spent
 
@@ -23,7 +23,7 @@ The median time of the learners who went through, next to the estimate each lab 
 |---|---|---|---|---|
 | Level 1 - Contributor basics | 1 h 30 | 1 h 31 | 33 min | 77 |
 | Level 2 - Contributor advanced | 4 h | 8 h 08 | 2 h 25 | 38 |
-| Level 3 - Release Manager | 6 h 55 | 9 h 52 | 2 h 56 | 15 |
+| Level 3 - Release Manager | 6 h 55 | 9 h 25 | 2 h 56 | 16 |
 
 ### Level 1 - Contributor basics
 
@@ -49,15 +49,15 @@ The median time of the learners who went through, next to the estimate each lab 
 
 | Labs | First estimate | Median | Fastest | Learners |
 |---|---|---|---|---|
-| Lab 3.1 | 50 min | 57 min | 15 min | 32 |
-| Lab 3.2 | 25 min | 24 min | 6 min | 32 |
-| Lab 3.3 | 45 min | 53 min | 18 min | 31 |
-| Lab 3.4 | 35 min | 16 min | 6 min | 16 |
-| Lab 3.5 | 35 min | 52 min | 19 min | 16 |
-| Lab 3.6 | 35 min | 1 h 01 | 16 min | 24 |
-| Lab 3.7 | 35 min | 37 min | 16 min | 24 |
-| Labs 3.8 to 3.10 | 1 h 50 | 1 h 56 | 43 min | 22 |
-| Lab 3.11 | 45 min | 54 min | 19 min | 22 |
+| Lab 3.1 | 50 min | 56 min | 15 min | 33 |
+| Lab 3.2 | 25 min | 23 min | 6 min | 33 |
+| Lab 3.3 | 45 min | 53 min | 18 min | 32 |
+| Lab 3.4 | 35 min | 15 min | 6 min | 17 |
+| Lab 3.5 | 35 min | 52 min | 19 min | 17 |
+| Lab 3.6 | 35 min | 1 h 01 | 16 min | 26 |
+| Lab 3.7 | 35 min | 37 min | 16 min | 26 |
+| Labs 3.8 to 3.10 | 1 h 50 | 1 h 51 | 43 min | 24 |
+| Lab 3.11 | 45 min | 50 min | 19 min | 24 |
 
 ### Lab by lab
 
@@ -70,7 +70,7 @@ From the learners who ran **Check my work** at the end of each lab: their receip
 | Lab 1.5 | 20 min | 16 min | 5 min | 46 |
 | Lab 1.6 | 20 min | 19 min | 5 min | 46 |
 | Lab 1.7 | 25 min | 27 min | 7 min | 49 |
-| Lab 2.1 | 15 min | 37 min | 12 min | 21 |
+| Lab 2.1 | 15 min | 40 min | 12 min | 21 |
 | Lab 2.2 | 25 min | 35 min | 17 min | 21 |
 | Lab 2.3 | 30 min | 46 min | 15 min | 22 |
 | Lab 2.4 | 30 min | 1 h 05 | 20 min | 22 |
@@ -79,17 +79,17 @@ From the learners who ran **Check my work** at the end of each lab: their receip
 | Lab 2.7 | 35 min | 47 min | 22 min | 22 |
 | Lab 2.8 | 20 min | 28 min | 10 min | 22 |
 | Lab 2.9 | 30 min | 51 min | 19 min | 22 |
-| Lab 3.1 | 50 min | 1 h 18 | 26 min | 15 |
-| Lab 3.2 | 25 min | 26 min | 12 min | 16 |
-| Lab 3.3 | 45 min | 1 h 15 | 22 min | 16 |
-| Lab 3.4 | 35 min | 16 min | 6 min | 16 |
-| Lab 3.5 | 35 min | 52 min | 19 min | 16 |
-| Lab 3.6 | 35 min | 1 h 01 | 20 min | 16 |
-| Lab 3.7 | 35 min | 33 min | 16 min | 16 |
-| Lab 3.8 | 35 min | 17 min | 6 min | 16 |
-| Lab 3.9 | 20 min | 7 min | 5 min | 15 |
-| Lab 3.10 | 55 min | 1 h 36 | 39 min | 16 |
-| Lab 3.11 | 45 min | 1 h | 20 min | 16 |
+| Lab 3.1 | 50 min | 1 h 05 | 17 min | 16 |
+| Lab 3.2 | 25 min | 25 min | 10 min | 17 |
+| Lab 3.3 | 45 min | 1 h 14 | 22 min | 17 |
+| Lab 3.4 | 35 min | 15 min | 6 min | 17 |
+| Lab 3.5 | 35 min | 52 min | 19 min | 17 |
+| Lab 3.6 | 35 min | 1 h 01 | 20 min | 17 |
+| Lab 3.7 | 35 min | 31 min | 16 min | 17 |
+| Lab 3.8 | 35 min | 21 min | 6 min | 17 |
+| Lab 3.9 | 20 min | 7 min | 5 min | 16 |
+| Lab 3.10 | 55 min | 1 h 34 | 38 min | 17 |
+| Lab 3.11 | 45 min | 1 h | 20 min | 17 |
 
 ## How the time is measured
 
