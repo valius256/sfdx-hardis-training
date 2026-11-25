@@ -23,8 +23,10 @@ orgAuthenticationMode: secretsOnly
 # promotion, never by a User Story. Lab 3.1 adds preprod here, for hotfixes.
 availableTargetBranches:
   - integration
+  - preprod
 availableTargetBranchesLabels:
   - "The shared integration org, where every contributor merges"
+  - "Hotfixes on the production version, agreed with the release manager"
 
 # Branch naming for new User Stories
 branchPrefixChoices:
@@ -53,6 +55,8 @@ failValidationOnPendingManualActions: true
 
 # --- Quality --------------------------------------------------------------
 testLevel: RunLocalTests
+# The monitoring repository, where a learner's team keeps the monitoring for this project.
+monitoringRepository: https://github.com/valius256/sfdx-hardis-training-monitoring
 # Salesforce refuses a deployment under 75%. This project asks for 80, like most real ones:
 # Lab 2.5 is where a Pull Request meets it.
 apexTestsMinCoverageOrgWide: 80

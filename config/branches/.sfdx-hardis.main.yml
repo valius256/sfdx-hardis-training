@@ -1,0 +1,6 @@
+# Which org the main branch deploys to.
+# Written by Add or Reconnect a Major Org (Lab 3.1 step 8). Main merges into
+# nothing: it is the production branch of the pipeline.
+targetUsername: helios-prod
+instanceUrl: https://login.salesforce.com
+mergeTargets: []

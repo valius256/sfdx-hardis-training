@@ -1,0 +1,7 @@
+# Which org the preprod branch deploys to, and where its work goes next.
+# Written by Add or Reconnect a Major Org (Lab 3.1 step 5), Lab 3.1 step 8
+# writes the mergeTargets of uat. Edited from VS Code: DevOps Pipeline panel,
+# gear menu > Pipeline Settings, scope Branch: preprod.
+targetUsername: helios-preprod
+instanceUrl: https://login.salesforce.com
+mergeTargets: [main]
