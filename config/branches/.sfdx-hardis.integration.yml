@@ -1,6 +1,6 @@
 # Which org the integration branch deploys to, and where its work goes next.
 # Written by Set up my training environment, and editable in the
 # DevOps Pipeline panel: gear menu > Pipeline Settings, scope Branch: integration.
-targetUsername: helios-integration
+targetUsername: test-f5jj2xofhed5@example.com
 instanceUrl: https://test.salesforce.com
-mergeTargets: []
+mergeTargets: [uat]

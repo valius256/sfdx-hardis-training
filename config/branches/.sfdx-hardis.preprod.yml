@@ -2,6 +2,7 @@
 # Written by Add or Reconnect a Major Org (Lab 3.1 step 5), Lab 3.1 step 8
 # writes the mergeTargets of uat. Edited from VS Code: DevOps Pipeline panel,
 # gear menu > Pipeline Settings, scope Branch: preprod.
-targetUsername: helios-preprod
-instanceUrl: https://login.salesforce.com
-mergeTargets: [main]
+targetUsername: phatdevdeptrai@keyloop.com
+instanceUrl: https://keyloop60-dev-ed.develop.my.salesforce.com
+mergeTargets:
+  - main

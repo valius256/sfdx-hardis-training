@@ -55,6 +55,8 @@ failValidationOnPendingManualActions: true
 
 # --- Quality --------------------------------------------------------------
 testLevel: RunLocalTests
+# The monitoring repository, where a learner's team keeps the monitoring for this project.
+monitoringRepository: https://github.com/valius256/sfdx-hardis-training-monitoring
 # Salesforce refuses a deployment under 75%. This project asks for 80, like most real ones:
 # Lab 2.5 is where a Pull Request meets it.
 apexTestsMinCoverageOrgWide: 80

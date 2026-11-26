@@ -1,0 +1,130 @@
+[
+  {
+    "text": "Approval Process (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Certificate (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Connected App (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Dashboard (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "External Credential (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Extl Clnt App Global Oauth Settings (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Flow Definition (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Named Credential (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Report (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Saml Sso Config (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Wave Application (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Wave Dashboard (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Wave Dataflow (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Wave Dataset (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Wave Recipe (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  },
+  {
+    "text": "Wave Xmd (all)",
+    "icon": "fa-solid fa-folder icon-warning",
+    "a_attr": {
+      "href": null
+    },
+    "children": []
+  }
+]
