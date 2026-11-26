@@ -6,3 +6,8 @@ targetUsername: phatdevdeptrai@keyloop.com
 instanceUrl: https://keyloop60-dev-ed.develop.my.salesforce.com
 mergeTargets:
   - main
+
+# helios-preprod is a Developer Edition org that already holds invalid Apex classes of its
+# own (the Coral Cloud sample). RunLocalTests would run their tests and fail on them, so
+# only the tests of this repository run here.
+testLevel: RunRepositoryTests
