@@ -1,0 +1,10 @@
+{
+  "excludeIdsFromCSVFiles": true,
+  "objects": [
+    {
+      "query": "SELECT External_Id__c, Label__c, Sequence__c, Is_Template__c FROM Handover_Item__c",
+      "operation": "Upsert",
+      "externalId": "External_Id__c"
+    }
+  ]
+}
