@@ -1,0 +1,13 @@
+# Which org the preprod branch deploys to, and where its work goes next.
+# Written by Add or Reconnect a Major Org (Lab 3.1 step 5), Lab 3.1 step 8
+# writes the mergeTargets of uat. Edited from VS Code: DevOps Pipeline panel,
+# gear menu > Pipeline Settings, scope Branch: preprod.
+targetUsername: phatdevdeptrai@keyloop.com
+instanceUrl: https://keyloop60-dev-ed.develop.my.salesforce.com
+mergeTargets:
+  - main
+
+# helios-preprod is a Developer Edition org that already holds invalid Apex classes of its
+# own (the Coral Cloud sample). RunLocalTests would run their tests and fail on them, so
+# only the tests of this repository run here.
+testLevel: RunRepositoryTests

@@ -1,0 +1,6 @@
+# Which org the main branch deploys to.
+# Written by Add or Reconnect a Major Org (Lab 3.1 step 8). Main merges into
+# nothing: it is the production branch of the pipeline.
+targetUsername: phat.nguyenvanquang.20f62b27d40b@agentforce.com
+instanceUrl: https://orgfarm-24eeaeca74-dev-ed.develop.my.salesforce.com
+mergeTargets: []
