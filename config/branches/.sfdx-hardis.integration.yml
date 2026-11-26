@@ -3,4 +3,4 @@
 # DevOps Pipeline panel: gear menu > Pipeline Settings, scope Branch: integration.
 targetUsername: test-f5jj2xofhed5@example.com
 instanceUrl: https://test.salesforce.com
-mergeTargets: []
+mergeTargets: [uat]
